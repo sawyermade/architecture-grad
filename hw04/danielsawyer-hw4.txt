@@ -1,0 +1,112 @@
+Q1.
+3.1
+4 + 5 + 11 + 4 + 3 + 3 + 2 + 1 + 1 + 1 + 2 = 37 Cycles
+
+3.2
+fld	f2, 0(Rx)
+Stall
+Stall
+Stall
+fmul.d	f2, f0, f2
+Stall
+Stall
+Stall
+Stall
+fdiv.d	f8, f2, f0
+fld	f4, 0(Ry)
+Stall
+Stall
+Stall
+fadd.d	f4, f0, f4
+Stall
+Stall
+Stall
+Stall
+Stall
+fadd.d	f10, f8, f2
+fsd	f4, 0(Ry)
+addi	Rx, Rx, 8
+addi	Ry, Ry, 8
+sub	x20, x4, Rx
+bnz	x20, Loop
+Stall
+
+Total = 27 Cycles
+
+3.5
+fld	f2, 0(Rx)
+fld	f4, 0(Ry)
+sub	x20, x4, Rx
+addi	Rx, Rx, 8
+fmul.d	f2, f0, f2
+Stall
+Stall
+Stall
+Stall
+fdiv.d	f8, f2, f0
+fadd.d	f4, f0, f4
+Stall
+Stall
+Stall
+Stall
+Stall
+Stall
+Stall
+fsd	f4, 0(Ry)
+fadd.d	f10, f8, f2
+bnz	x20, Loop
+addi	Ry, Ry, 8
+
+Total = 22 Cycles
+
+3.6
+b.) Using extra registers/renaming
+fld	f2, 0(Rx)
+fld	f4, 0(Ry)
+fld	f11, 8(Rx)
+fld     f12, 8(Ry)
+addi 	Rx, Rx, 16
+fmul.d 	f2, f0, f2
+fmul.d 	f11, f0, f11
+fadd.d 	f4, f0, f4
+sub 	x20, x4, Rx
+fdiv.d 	f8, f2, f0
+fdiv.d 	f13, f2, f0
+Stall
+fsd 	f4, 0(Ry)
+Stall
+Stall
+Stall
+Stall
+Stall
+Stall
+Stall
+fadd.d 	f10, f8, f2
+bnz 	x20, loop
+addi 	Ry, Ry, 16
+
+Total = 23 Cycles
+
+c.)
+Regular = 44 Cycles
+Unrolling = 23 Cycles
+Speedup = 44/23 = 1.913
+
+3.11
+a.) 4
+b.) 2
+c.) 0
+
+Q2.
+a.)
+INDEX:     1	2	3	4	5	6	7	8	9	10	11	12	13
+GIVEN: 	   T	T	N	T	N	T	T	T	T	N	T	T	N
+Predicted: N	T	T	N	T	N	T	T	T	T	N	T	T
+Missed:	   1	0	1	1	1	1	0	0	0	1	1	0	1 = 8 missed predictions
+
+b.)
+INDEX:     1	2	3	4	5	6	7	8	9	10	11	12	13
+GIVEN: 	   T	T	N	T	N	T	T	T	T	N	T	T	N
+Predicted: T	T	T	T	T	T	T	T	T	T	T	T	T
+Missed:	   0	0	1	0	1	0	0	0	0	1	0	0	1 = 4 missed predictions
+
